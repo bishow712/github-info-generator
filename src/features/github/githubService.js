@@ -8,6 +8,12 @@ const gitData = async (idName) => {
     return response.data
 }
 
-const githubService = {gitData}
+const gitRepo = async (idName) => {
+    const response = await axios.get(apiUrl+`${idName}/repos`)
+
+    return response.data
+}
+
+const githubService = {gitData, gitRepo}
 
 export default githubService
