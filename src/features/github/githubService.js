@@ -14,6 +14,18 @@ const gitRepo = async (idName) => {
     return response.data
 }
 
-const githubService = {gitData, gitRepo}
+const gitFollower = async (idName) => {
+    const response = await axios.get(apiUrl+`${idName}/followers`)
+
+    return response.data
+}
+
+const gitFollowing = async (idName) => {
+    const response = await axios.get(apiUrl+`${idName}/following`)
+
+    return response.data
+}
+
+const githubService = {gitData, gitRepo, gitFollower, gitFollowing}
 
 export default githubService

@@ -4,6 +4,8 @@ import githubService from './githubService'
 const initialState = {
     gitinfo: [],
     gitrepo: [],
+    followers: [],
+    following: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -22,6 +24,24 @@ export const fetchInfo = createAsyncThunk('git/info', async (idName, thunkAPI)=>
 export const fetchRepo = createAsyncThunk('git/repo', async (idName, thunkAPI)=>{
     try {
         return await githubService.gitRepo(idName)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+export const fetchFollower = createAsyncThunk('git/follower', async (idName, thunkAPI)=>{
+    try {
+        return await githubService.gitFollower(idName)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+export const fetchFollowing = createAsyncThunk('git/following', async (idName, thunkAPI)=>{
+    try {
+        return await githubService.gitFollowing(idName)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -59,6 +79,32 @@ export const githubSlice = createSlice({
                 state.gitrepo = action.payload
             })
             .addCase(fetchRepo.rejected, (state,action)=>{
+                state.isLoading=false
+                state.isError=true
+                state.message = action.payload
+            })
+            .addCase(fetchFollower.pending, (state)=>{
+                state.isLoading = true
+            })
+            .addCase(fetchFollower.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.followers = action.payload
+            })
+            .addCase(fetchFollower.rejected, (state,action)=>{
+                state.isLoading=false
+                state.isError=true
+                state.message = action.payload
+            })
+            .addCase(fetchFollowing.pending, (state)=>{
+                state.isLoading = true
+            })
+            .addCase(fetchFollowing.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.following = action.payload
+            })
+            .addCase(fetchFollowing.rejected, (state,action)=>{
                 state.isLoading=false
                 state.isError=true
                 state.message = action.payload
