@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 function Body() {
   const [idName, setIdName] = useState('')
+  const [submitted, setSubmitted] = useState(false);
 
   const dispatch = useDispatch()
 
@@ -19,6 +20,12 @@ function Body() {
     dispatch(fetchFollower(idName))
     dispatch(fetchFollowing(idName))
     setIdName('')
+    setSubmitted(true)
+  }
+
+  const onReset = (e) => {
+    e.preventDefault()
+    setSubmitted(false)
   }
 
   const userImage = `https://avatars.githubusercontent.com/u/${gitinfo.id}?v=4`
@@ -39,18 +46,31 @@ function Body() {
           </div>
 
           <div className='text-center'>
-            <button type='submit' className='btn btn-primary btn-dark'>Fetch Information</button>
+            <button type='submit' className='btn btn-primary btn-dark m-3'>Fetch Information</button>
+            <button type="button" className='btn btn-primary btn-dark m-3' onClick={onReset}>Reset Information</button>
           </div>
         </form>
 
-        <div className='border border-dark mt-3 mb-3 p-3 rounded d-flex justify-content-around'>
-          <div className='mt-3 mb-3'>            
-            <h2>{gitinfo.name}</h2>
-            <p>Bio: {(!gitinfo.bio) ? 'Bio Missing.' : `${gitinfo.bio}`}</p>
+        
+        {(!submitted)
+        ?
+        <h1 className='text-center m-3'>Please add the Github Username.</h1>
+        :
+        <div>
+          
+          <div className='border border-dark mt-3 mb-3 p-3 rounded d-flex justify-content-around'>
+                    
+          <div className='mt-3 mb-3 '>            
+            <h2><u><b>{gitinfo.name}</b></u></h2>
+            <p><b>Username : @</b>{gitinfo.login}</p>
+            <p><b>Bio :</b> {(!gitinfo.bio) ? 'Missing Bio' : `${gitinfo.bio}`}</p>
+            <p><b>Public Repos :</b> {gitinfo.public_repos}</p>
           </div>
-          <div>
+
+          <div className='d-flex justift-content-center align-items-center'>
             <img className="rounded-circle" width="150" height="150" src={userImage} alt="User image here." />  
           </div>
+          
         </div>
 
 
@@ -60,10 +80,10 @@ function Body() {
           <div className='d-flex flex-wrap justify-content-start'> 
               {sortedGitRepos.map((item)=>{
                 return (
-                  <div className='m-3'>
-                    <h2>{item.name}</h2>
-                        <p><b>Visibility :</b> {(!item.private)? 'Public' : 'Private'}</p>
-                        <p><b>Created At :</b> {new Date(item.created_at).toLocaleString("en-US", { timeZone: "America/New_York" })}</p>
+                  <div className='m-3 border border-dark p-2 rounded' style={{width:"20rem", overflow: 'auto', }}>
+                    <h2><u><b>{item.name}</b></u></h2>
+                    <p><b>Visibility :</b> {(!item.private)? 'Public' : 'Private'}</p>
+                    <p><b>Created At :</b> {new Date(item.created_at).toLocaleString("en-US", { timeZone: "America/New_York" })}</p>
                   </div>                  
                 )
               })}
@@ -73,12 +93,12 @@ function Body() {
       <div>
         <h2>Social</h2>
 
-        <p>Followers: {gitinfo.followers}</p>
+        <p><u>Followers: {gitinfo.followers}</u></p>
 
         <div className='d-flex flex-wrap justify-content-start text-center'>
         {followers.map((item)=>{
           return(  
-            <div className='m-3'>          
+            <div className='m-1'>          
               <img className="rounded-circle mb-3" width="80" height="80" src={`https://avatars.githubusercontent.com/u/${item.id}?v=4`} alt="Follower image here."/>
               <p><b>@</b>{item.login}</p>
             </div>
@@ -87,12 +107,12 @@ function Body() {
         </div>
 
 
-        <p>Following: {gitinfo.following}</p>
+        <p><u>Following: {gitinfo.following}</u></p>
 
         <div className='d-flex flex-wrap justify-content-start text-center'>
         {following.map((item)=>{
           return(  
-            <div className='m-3'>          
+            <div className='m-1'>          
               <img className="rounded-circle mb-3" width="80" height="80" src={`https://avatars.githubusercontent.com/u/${item.id}?v=4`} alt="Following user image here."/>
               <p><b>@</b>{item.login}</p>
             </div>
@@ -101,6 +121,9 @@ function Body() {
         </div>
 
       </div>
+      </div>
+      }
+
     </div>
   )
 }
