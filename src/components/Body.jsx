@@ -28,6 +28,12 @@ function Body() {
     setSubmitted(false)
   }
 
+  if(isLoading){
+    return (
+      <h1>Loading......</h1>
+    )
+  }
+
   const userImage = `https://avatars.githubusercontent.com/u/${gitinfo.id}?v=4`
 
   const sortedGitRepos = gitrepo.slice().sort((a, b) => {
