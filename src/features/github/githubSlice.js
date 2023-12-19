@@ -63,6 +63,7 @@ export const githubSlice = createSlice({
             .addCase(fetchInfo.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
+                state.isError=false
                 state.gitinfo = action.payload
             })
             .addCase(fetchInfo.rejected, (state,action)=>{
@@ -76,6 +77,7 @@ export const githubSlice = createSlice({
             .addCase(fetchRepo.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
+                state.isError=false
                 state.gitrepo = action.payload
             })
             .addCase(fetchRepo.rejected, (state,action)=>{
@@ -89,6 +91,7 @@ export const githubSlice = createSlice({
             .addCase(fetchFollower.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
+                state.isError=false
                 state.followers = action.payload
             })
             .addCase(fetchFollower.rejected, (state,action)=>{

@@ -1,6 +1,6 @@
 import {useSelector, useDispatch} from 'react-redux'
-import { fetchInfo, fetchRepo, fetchFollower, fetchFollowing } from '../features/github/githubSlice'
-// import githubSlice from '../features/github/githubSlice'
+import { fetchInfo, fetchRepo, fetchFollower, fetchFollowing, reset } from '../features/github/githubSlice'
+import githubSlice from '../features/github/githubSlice'
 import { useState } from 'react'
 
 function Body() {
@@ -25,12 +25,37 @@ function Body() {
 
   const onReset = (e) => {
     e.preventDefault()
+    dispatch(reset())
     setSubmitted(false)
   }
 
   if(isLoading){
     return (
-      <h1>Loading......</h1>
+      <div className='position-absolute top-50 start-50 translate-middle'>
+        <div className="loader"></div>
+        {/* <p className='mt-3 fw-bold' style={{ fontSize: '1.5rem'}}>Fetchng Information.</p> */}
+      </div>
+    )
+  }
+
+  if(isError){
+    return (
+      <div className='container'>
+          
+        <form action="" onSubmit={onSubmit}>
+          <div class="input-group mt-3 mb-3">
+            <label htmlFor="text" class="input-group-text">@</label>
+            <input type="text" class="form-control" name='idName' value={idName} placeholder='Github Username' onChange={(e)=>setIdName(e.target.value)}/>
+          </div>
+
+          <div className='text-center'>
+            <button type='submit' className='btn btn-primary btn-dark m-3'>Fetch Information</button>
+            <button type="button" className='btn btn-primary btn-dark m-3' onClick={onReset}>Reset Information</button>
+          </div>
+        </form>
+
+        <h1 className='text-center m-3'>Can't find the username.</h1>
+      </div>
     )
   }
 
@@ -43,8 +68,9 @@ function Body() {
   });
 
   return (
+      
       <div className='container'>
-
+          
         <form action="" onSubmit={onSubmit}>
           <div class="input-group mt-3 mb-3">
             <label htmlFor="text" class="input-group-text">@</label>
@@ -96,12 +122,12 @@ function Body() {
           </div>
         </div>
 
-      <div>
+      <div className='border border-dark p-3 rounded'>
         <h2>Social</h2>
 
-        <p><u>Followers: {gitinfo.followers}</u></p>
+        <p className='mt-4'><u>Followers: {gitinfo.followers}</u></p>
 
-        <div className='d-flex flex-wrap justify-content-start text-center'>
+        <div className='d-flex flex-wrap justify-content-start text-center border border-dark p-2 rounded'>
         {followers.map((item)=>{
           return(  
             <div className='m-1'>          
@@ -113,9 +139,9 @@ function Body() {
         </div>
 
 
-        <p><u>Following: {gitinfo.following}</u></p>
+        <p className='mt-4'><u>Following: {gitinfo.following}</u></p>
 
-        <div className='d-flex flex-wrap justify-content-start text-center'>
+        <div className='d-flex flex-wrap justify-content-start text-center border border-dark p-2 rounded'>
         {following.map((item)=>{
           return(  
             <div className='m-1'>          
