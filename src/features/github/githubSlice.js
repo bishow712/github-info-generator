@@ -48,6 +48,15 @@ export const fetchFollowing = createAsyncThunk('git/following', async (idName, t
     }
 })
 
+// export const fetchLanguage = createAsyncThunk('git/language', async ([idName, name], thunkAPI)=>{
+//     try {
+//         return await githubService.repoLanguage([idName, name])
+//     } catch (error) {
+//         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.message || error.toString()
+//         return thunkAPI.rejectWithValue(message)
+//     }
+// })
+
 //Creating a Slice
 export const githubSlice = createSlice({
     name: 'github',
@@ -112,6 +121,19 @@ export const githubSlice = createSlice({
                 state.isError=true
                 state.message = action.payload
             })
+            // .addCase(fetchLanguage.pending, (state)=>{
+            //     state.isLoading = true
+            // })
+            // .addCase(fetchLanguage.fulfilled, (state, action) => {
+            //     state.isLoading = false
+            //     state.isSuccess = true
+            //     state.language = [...state.language, action.payload]
+            // })
+            // .addCase(fetchLanguage.rejected, (state,action)=>{
+            //     state.isLoading=false
+            //     state.isError=true
+            //     state.message = action.payload
+            // })
     }
 })
 
